@@ -151,7 +151,7 @@ daily_readings_unit
 					)
 			)))
 		WHEN (u.unit_represent = 'flow'::unit_represent_type OR u.unit_represent = 'raw'::unit_represent_type) THEN
-			(max(( 
+			(max((
 				(r.reading * 3600 / u.sec_in_rate)
 				*
 				extract(EPOCH FROM -- The number of seconds that the reading shares with the interval
@@ -199,9 +199,9 @@ daily_readings_unit
 					-
 					greatest(r.start_timestamp, gen.interval_start)
 				)
-			))) 
+			)))
 		END as min_rate,
-		
+
 	tsrange(gen.interval_start, gen.interval_start + '1 day'::INTERVAL, '()') AS time_interval
 	FROM ((readings r
 	-- This sequence of joins takes the meter id to its unit and a unit.
@@ -292,7 +292,7 @@ hourly_readings_unit
 				)
 			)))
 		END as max_rate,
-			
+
 		CASE WHEN u.unit_represent = 'quantity'::unit_represent_type THEN
 			(min(( --Extract the minimum rate over each day
 				(r.reading * 3600 / (extract(EPOCH FROM (r.end_timestamp - r.start_timestamp)))) -- Reading rate in kw
@@ -450,7 +450,7 @@ DECLARE
 				CASE WHEN u.unit_represent = 'quantity'::unit_represent_type THEN
 					-- If it is quantity readings then need to convert to rate per hour by dividing by the time length where
 					-- the 3600 is needed since EPOCH is in seconds.
-					((r.reading / (extract(EPOCH FROM (r.end_timestamp - r.start_timestamp)) / 3600)) * c.slope + c.intercept) 
+					((r.reading / (extract(EPOCH FROM (r.end_timestamp - r.start_timestamp)) / 3600)) * c.slope + c.intercept)
 				WHEN (u.unit_represent = 'flow'::unit_represent_type OR u.unit_represent = 'raw'::unit_represent_type) THEN
 					-- If it is flow or raw readings then it is already a rate so just convert it but also need to normalize
 					-- to per hour.
@@ -486,7 +486,8 @@ DECLARE
 					upper(hourly.time_interval) AS end_timestamp
 				FROM ((hourly_readings_unit hourly
 				INNER JOIN meters m ON m.id = current_meter_id)
-				INNER JOIN cik c on c.source_id = m.unit_id AND c.destination_id = graphic_unit_id)
+-- 				INNER JOIN cik c on c.source_id = m.unit_id AND c.destination_id = graphic_unit_id)
+				INNER JOIN cik c on c.source_id = m.unit_id AND c.destination_id = graphic_unit_id AND tsrange(c.start_time, c.end_time, '()') && hourly.time_interval)
 				WHERE requested_range @> time_interval AND hourly.meter_id = current_meter_id
 				-- This ensures the data is sorted
 				ORDER BY start_timestamp ASC;
@@ -510,7 +511,8 @@ DECLARE
 				INNER JOIN meters m ON m.id = current_meter_id)
 				-- This is getting the conversion for the meter and unit to graph.
 				-- The slope and intercept are used above the transform the reading to the desired unit.
-				INNER JOIN cik c on c.source_id = m.unit_id AND c.destination_id = graphic_unit_id)
+-- 				INNER JOIN cik c on c.source_id = m.unit_id AND c.destination_id = graphic_unit_id)
+				INNER JOIN cik c on c.source_id = m.unit_id AND c.destination_id = graphic_unit_id AND tsrange(c.start_time, c.end_time, '()') && daily.time_interval)
 				WHERE requested_range @> time_interval AND daily.meter_id = current_meter_id
 				-- This ensures the data is sorted
 				ORDER BY start_timestamp ASC;

@@ -45,7 +45,23 @@
 		"generateTestingData": "node -e 'require(\"./src/server/data/automatedTestingData\").generateTestingData()'",
 		"testData": "node -e 'require(\"./src/server/data/automatedTestingData.js\").insertSpecialUnitsConversionsMetersGroups()'",
 		"webData": "node -e 'require(\"./src/server/data/websiteData.js\").insertWebsiteData()'",
-		"addLogMsg": "node -e 'require(\"./src/server/services/addLogMsg.js\").addLogMsgToDB()'"
+		"addLogMsg": "node -e 'require(\"./src/server/services/addLogMsg.js\").addLogMsgToDB()'",
+		"createCikTest": "node -e 'require(\"./src/server/tmp/uploads/createCikTest.js\").createHourly()'",
+		"createCikTest_v2": "node ./src/server/tmp/uploads/createCikTest_v2.js",
+		"createCikTest_v3": "node ./src/server/tmp/uploads/createCikTest_v3.js",
+		"createCikTest_v4": "node ./src/server/tmp/uploads/createCikTest_v4.js",
+		"runCikTests": "node ./src/server/tmp/uploads/runCikTestsFromFile.js",
+		"createCikTest_h1d": "node -e 'require(\"./src/server/tmp/uploads/createCikTest_v1.js\").createHourly_1d()",
+		"createCikTest_h7d": "node -e 'require(\"./src/server/tmp/uploads/createCikTest_v1.js\").createHourly_7d()'",
+		"createCikTest_h1m": "node -e 'require(\"./src/server/tmp/uploads/createCikTest_v1.js\").createHourly_1m()'",
+		"createCikTest_h3m": "node -e 'require(\"./src/server/tmp/uploads/createCikTest_v1.js\").createHourly_3m()'",
+		"createCikTest_h6m": "node -e 'require(\"./src/server/tmp/uploads/createCikTest_v1.js\").createHourly_6m()'",
+		"createCikTest_h12m": "node -e 'require(\"./src/server/tmp/uploads/createCikTest_v1.js\").createHourly_12m()'",
+		"createCikTest_h24m": "node -e 'require(\"./src/server/tmp/uploads/createCikTest_v1.js\").createHourly_24m()'",
+	    "createCikTest_d6m": "node -e 'require(\"./src/server/tmp/uploads/createCikTest_v1.js\").createDaily_6m()'",
+		"createCikTest_d12m": "node -e 'require(\"./src/server/tmp/uploads/createCikTest_v1.js\").createDaily_12m()'",
+		"createCikTest_d18m": "node -e 'require(\"./src/server/tmp/uploads/createCikTest_v1.js\").createDaily_18m()'",
+		"createCikTest_d24m": "node -e 'require(\"./src/server/tmp/uploads/createCikTest_v1.js\").createDaily_24m()'"
 	},
 	"nodemonConfig": {
 		"watch": [
